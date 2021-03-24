@@ -3,4 +3,7 @@
     <string name="title_sleep">Sleep</string>
     <string name="title_stats">Stats</string>
     <string name="title_profile">Profile</string>
+    <string name="start_text">Sleep Tracker</string>
+    <string name="start_image_description">A Moon and Stars.</string>
+    <string name="start_button_text">Start</string>
 </resources>
