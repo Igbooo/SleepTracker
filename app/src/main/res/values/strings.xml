@@ -7,4 +7,7 @@
     <string name="start_image_description">A Moon and Stars.</string>
     <string name="start_button_text">Start</string>
     <string name="profile_title">Profile</string>
+    <string name="profile_sleep_image_description">A moon and cloud.</string>
+    <string name="profile_wake_image_description">A sun.</string>
+    <string name="profile_time_image_description">A clock.</string>
 </resources>
