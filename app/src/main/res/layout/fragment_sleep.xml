@@ -2,124 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sleepPurple"
-    android:paddingTop="?attr/actionBarSize">
+    tools:context=".ui.sleep.SleepFragment">
 
-
-    <EditText
+    <TextView
         android:id="@+id/text_home"
-        android:layout_width="421dp"
-        android:layout_height="739dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:autofillHints=""
-        android:inputType="none"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.277"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75" />
-
-    <Button
-        android:id="@+id/btnPick3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="430dp"
-        android:layout_marginTop="500dp"
-        android:layout_marginBottom="32dp"
-        android:text="@string/pick_date_and_time"
-        app:layout_constraintBottom_toTopOf="@+id/text_home"
-        app:layout_constraintEnd_toStartOf="@+id/text_home"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/sleepBlue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="331dp"
-        android:layout_height="57dp"
-        android:text="@string/select_the_time_you_went_to_sleep"
-        tools:layout_editor_absoluteX="49dp"
-        tools:layout_editor_absoluteY="62dp"
-        tools:ignore="MissingConstraints" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="331dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="450dp"
-        android:layout_marginBottom="680dp"
-        android:text="@string/select_the_time_woke_up"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/text_home"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_home"
-        tools:ignore="MissingConstraints" />
-
-
-    <EditText
-        android:id="@+id/txtView"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="425dp"
-        android:layout_marginTop="200dp"
-        android:autofillHints=""
-        android:inputType="date|time"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/text_home"
-        app:layout_constraintEnd_toStartOf="@+id/text_home"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
-        tools:visibility="visible"></EditText>
-
-
-    <EditText
-        android:id="@+id/txtView2"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="450dp"
-        android:layout_marginTop="595dp"
-        android:autofillHints=""
-        android:inputType="time"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/text_home"
-        app:layout_constraintEnd_toStartOf="@+id/text_home"
-        app:layout_constraintHorizontal_bias="0.483"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
-        app:layout_constraintVertical_bias="0.528"
-        tools:visibility="visible"></EditText>
-
-    <Button
-        android:id="@+id/btnPick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="430dp"
-        android:layout_marginTop="540dp"
-        android:text="@string/pick_date_and_time"
-        app:layout_constraintEnd_toStartOf="@+id/text_home"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
