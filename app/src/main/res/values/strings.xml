@@ -6,4 +6,8 @@
     <string name="start_text">Sleep Tracker</string>
     <string name="start_image_description">A Moon and Stars.</string>
     <string name="start_button_text">Start</string>
+    <string name="sleep_input_bedtime_text">Input Bedtime</string>
+    <string name="sleep_input_wakeup_text">Input Wake Up Time</string>
+    <string name="sleep_save_button_text">Save Sleep</string>
+    <string name="dropdown_desc">A drop down arrow.</string>
 </resources>
