@@ -1,7 +1,7 @@
 package com.example.sleeptracker.ui.sleep;
 
-import android.app.Activity;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,19 +13,36 @@ import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
-import com.example.sleeptracker.MainActivity;
 import com.example.sleeptracker.R;
 
 import android.text.format.DateFormat;
+import android.widget.Toast;
+
+
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 public class SleepFragment extends Fragment {
-    Button buttonBedtime, buttonWakeUp;
+    Button buttonBedtime, buttonWakeUp, buttonSave;
     TextView tvBedtime, tvWakeUp;
     int bedHour, bedMinute, wakeHour, wakeMinute;
 
     private SleepViewModel homeViewModel;
+
+    public void CalculateTime(int bedHour, int bedMinute, int wakeHour, int wakeMinute)
+    {
+
+        long duration = bedHour - wakeHour;
+        long diffInHr = TimeUnit.MICROSECONDS.toHours(duration);
+        long diffInMin = TimeUnit.MICROSECONDS.toMinutes(duration);
+
+
+
+        System.out.println(diffInHr + "Hrs and " + diffInMin  + "Minutes");
+    }
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -37,6 +54,8 @@ public class SleepFragment extends Fragment {
         tvWakeUp = root.findViewById(R.id.wakeUpTimeText);
         buttonBedtime = root.findViewById(R.id.downArrowBedtime);
         buttonWakeUp = root.findViewById(R.id.downArrowWakeUp);
+        buttonSave = root.findViewById(R.id.saveInputButton);
+
 
         buttonBedtime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +100,26 @@ public class SleepFragment extends Fragment {
                 timePickerDialog.show();
             }
         });
+
+
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                Navigation.findNavController(view).navigate(R.id.action_navigation_sleep_to_navigation_profile);
+
+
+
+                Toast.makeText(getContext(),
+                        "Saved!",
+                        Toast.LENGTH_LONG).show();
+
+            }
+
+        });
         return root;
+
     }
 
 }
