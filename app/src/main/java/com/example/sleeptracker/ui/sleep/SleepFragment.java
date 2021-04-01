@@ -1,8 +1,8 @@
 package com.example.sleeptracker.ui.sleep;
 
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,16 +33,12 @@ public class SleepFragment extends Fragment {
 
     public void CalculateTime(int bedHour, int bedMinute, int wakeHour, int wakeMinute)
     {
-
         long duration = bedHour - wakeHour;
         long diffInHr = TimeUnit.MICROSECONDS.toHours(duration);
         long diffInMin = TimeUnit.MICROSECONDS.toMinutes(duration);
 
-
-
         System.out.println(diffInHr + "Hrs and " + diffInMin  + "Minutes");
     }
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,7 +51,6 @@ public class SleepFragment extends Fragment {
         buttonBedtime = root.findViewById(R.id.downArrowBedtime);
         buttonWakeUp = root.findViewById(R.id.downArrowWakeUp);
         buttonSave = root.findViewById(R.id.saveInputButton);
-
 
         buttonBedtime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +73,6 @@ public class SleepFragment extends Fragment {
                 timePickerDialog.show();
             }
         });
-
         buttonWakeUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,26 +94,17 @@ public class SleepFragment extends Fragment {
                 timePickerDialog.show();
             }
         });
-
-
         buttonSave.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-
                 Navigation.findNavController(view).navigate(R.id.action_navigation_sleep_to_navigation_profile);
-
-
-
-                Toast.makeText(getContext(),
+                Toast toast = Toast.makeText(getContext(),
                         "Saved!",
-                        Toast.LENGTH_LONG).show();
-
+                        Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.BOTTOM, 0, 250);
+                toast.show();
             }
-
         });
         return root;
-
     }
-
 }
