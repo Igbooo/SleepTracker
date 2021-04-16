@@ -2,6 +2,7 @@ package com.example.sleeptracker;
 
 import android.app.ActionBar;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -10,12 +11,20 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.room.Room;
 
 public class MainActivity extends AppCompatActivity {
+    public static SleepDatabase sleepDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //db init
+        sleepDatabase = Room.databaseBuilder(getApplicationContext(), SleepDatabase.class, "sleepdb").allowMainThreadQueries().build();
+        //disable this for release
+        boolean dbWorks = dbTest();
+
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -29,4 +38,22 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
     }
 
+    private boolean dbTest() {
+        try {
+            SleepRecord sleep = new SleepRecord();
+            sleep.setStartTime("12:00AM");
+            sleep.setEndTime("01:00AM");
+            sleep.setStartDate("01-01-1970");
+            sleep.setEndDate("01-01-1970");
+            sleepDatabase.sleepDAO().addRecord(sleep);
+            sleepDatabase.sleepDAO().deleteRecord(sleep);
+
+            Toast.makeText(this, "DEBUG: Database inserted & deleted data successfully!", Toast.LENGTH_SHORT).show();
+
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
 }
