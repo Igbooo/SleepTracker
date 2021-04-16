@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
         //db init
         sleepDatabase = Room.databaseBuilder(getApplicationContext(), SleepDatabase.class, "sleepdb").allowMainThreadQueries().build();
         //disable this for release
-        boolean dbWorks = dbTest();
+        sleepDatabase.clearAllTables();
+        //boolean dbWorks = dbTest();
 
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
@@ -43,12 +44,12 @@ public class MainActivity extends AppCompatActivity {
             SleepRecord sleep = new SleepRecord();
             sleep.setStartTime("12:00AM");
             sleep.setEndTime("01:00AM");
-            sleep.setStartDate("01-01-1970");
-            sleep.setEndDate("01-01-1970");
+            sleep.setStartDate("1970-01-01");
+            sleep.setEndDate("1970-01-01");
             sleepDatabase.sleepDAO().addRecord(sleep);
-            sleepDatabase.sleepDAO().deleteRecord(sleep);
+            //sleepDatabase.sleepDAO().deleteRecord(sleep);
 
-            Toast.makeText(this, "DEBUG: Database inserted & deleted data successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "DEBUG: Database inserted data successfully!", Toast.LENGTH_SHORT).show();
 
             return true;
         }

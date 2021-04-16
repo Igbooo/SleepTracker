@@ -10,4 +10,7 @@
     <string name="profile_sleep_image_description">A moon and cloud.</string>
     <string name="profile_wake_image_description">A sun.</string>
     <string name="profile_time_image_description">A clock.</string>
+    <string name="profile_to_bed_text">Went to bed:</string>
+    <string name="profile_woke_up_text">Woke up:</string>
+    <string name="profile_time_slept_text">Time slept:</string>
 </resources>
