@@ -42,15 +42,15 @@ public class MainActivity extends AppCompatActivity {
     private boolean dbTest() {
         try {
             SleepRecord sleep = new SleepRecord();
-            sleep.setStartTime("12:00AM");
-            sleep.setEndTime("01:00AM");
+            sleep.setStartTime("00:00");
+            sleep.setEndTime("01:00");
             sleep.setStartDate("2020-01-01");
             sleep.setEndDate("2020-01-01");
             sleepDatabase.sleepDAO().addRecord(sleep);
             //sleepDatabase.sleepDAO().deleteRecord(sleep);
             SleepRecord sleep2 = new SleepRecord();
-            sleep.setStartTime("07:00AM");
-            sleep.setEndTime("04:00PM");
+            sleep.setStartTime("07:13");
+            sleep.setEndTime("20:32");
             sleep.setStartDate("2020-01-02");
             sleep.setEndDate("2020-01-02");
             sleepDatabase.sleepDAO().addRecord(sleep);

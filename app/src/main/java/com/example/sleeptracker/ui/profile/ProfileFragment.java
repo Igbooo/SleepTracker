@@ -17,11 +17,15 @@ import com.example.sleeptracker.R;
 import com.example.sleeptracker.SleepRecord;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
 import static com.example.sleeptracker.MainActivity.sleepDatabase;
 import static java.time.format.TextStyle.FULL;
+import static java.time.temporal.ChronoUnit.HOURS;
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class ProfileFragment extends Fragment {
@@ -92,14 +96,21 @@ public class ProfileFragment extends Fragment {
         dayOfWeekTV.setText(dayOfWeek + "\n" + lDate.getDayOfMonth() + "/" + lDate.getMonthValue() + "/" + lDate.getYear());
 
         if ((currentSleep = getSleepFromDay(sleeps, date)) != null) {
-            //we can change the text view now
-            wentToBedTV.setText(getString(R.string.profile_to_bed_text) + " " + currentSleep.getStartTime());
-            wokeUpTV.setText(getString(R.string.profile_woke_up_text) + " " +  currentSleep.getEndTime());
-            timeSleptTV.setText(getString(R.string.profile_time_slept_text) + " " +  "???");
+            LocalTime startTime = LocalTime.parse(currentSleep.getStartTime());
+            LocalTime endTime = LocalTime.parse(currentSleep.getEndTime());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+            String startTimeFormat = startTime.format(formatter);
+            String endTimeFormat = endTime.format(formatter);
+            Long hoursSlept = HOURS.between(startTime, endTime);
+            Long minutesSlept = MINUTES.between(startTime, endTime) % 60;
+
+            wentToBedTV.setText(getString(R.string.profile_to_bed_text) + " " + startTimeFormat);
+            wokeUpTV.setText(getString(R.string.profile_woke_up_text) + " " +  endTimeFormat);
+            timeSleptTV.setText(getString(R.string.profile_time_slept_text) + " " + hoursSlept + "h "+ minutesSlept + "m");
         } else {
             wentToBedTV.setText(getString(R.string.profile_to_bed_text) + " ");
             wokeUpTV.setText(getString(R.string.profile_woke_up_text) + " ");
-            timeSleptTV.setText(getString(R.string.profile_time_slept_text) + " " +  "???");
+            timeSleptTV.setText(getString(R.string.profile_time_slept_text) + " ");
             Toast.makeText(getContext(), "There is no data for this date!!", Toast.LENGTH_SHORT).show();
         }
     }
