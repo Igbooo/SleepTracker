@@ -1,10 +1,12 @@
 package com.example.sleeptracker.ui.profile;
 
+import android.app.DatePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ import com.example.sleeptracker.SleepRecord;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,12 +31,12 @@ import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
     private ProfileViewModel profileViewModel;
 
     List<SleepRecord> sleeps = sleepDatabase.sleepDAO().getDataFromDB();
-    LocalDate currentViewedDate;
+    public static LocalDate currentViewedDate;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -52,6 +55,20 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        view.findViewById(R.id.ProfileDate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(currentViewedDate.getYear(), (currentViewedDate.getMonthValue() - 1),
+                        currentViewedDate.getDayOfMonth());
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), ProfileFragment.this, calendar
+                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.setOnDateSetListener(ProfileFragment.this);
+                datePickerDialog.show();
+            }
+        });
+
         view.findViewById(R.id.PreviousButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,8 +86,8 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private SleepRecord getSleepFromDay (List<SleepRecord> sleeps, String date) {
-        for(SleepRecord s : sleeps) {
+    private SleepRecord getSleepFromDay(List<SleepRecord> sleeps, String date) {
+        for (SleepRecord s : sleeps) {
             if (s.getStartDate().equals(date)) {
                 return s;
             }
@@ -105,13 +122,19 @@ public class ProfileFragment extends Fragment {
             Long minutesSlept = MINUTES.between(startTime, endTime) % 60;
 
             wentToBedTV.setText(getString(R.string.profile_to_bed_text) + " " + startTimeFormat);
-            wokeUpTV.setText(getString(R.string.profile_woke_up_text) + " " +  endTimeFormat);
-            timeSleptTV.setText(getString(R.string.profile_time_slept_text) + " " + hoursSlept + "h "+ minutesSlept + "m");
+            wokeUpTV.setText(getString(R.string.profile_woke_up_text) + " " + endTimeFormat);
+            timeSleptTV.setText(getString(R.string.profile_time_slept_text) + " " + hoursSlept + "h " + minutesSlept + "m");
         } else {
             wentToBedTV.setText(getString(R.string.profile_to_bed_text) + " ");
             wokeUpTV.setText(getString(R.string.profile_woke_up_text) + " ");
             timeSleptTV.setText(getString(R.string.profile_time_slept_text) + " ");
             Toast.makeText(getContext(), "There is no data for this date!!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        month++;
+        currentViewedDate = currentViewedDate.of(year, month, day);
+        loadNewDate(getView(), currentViewedDate.toString());
     }
 }
