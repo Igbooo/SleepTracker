@@ -9,10 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sleeptracker.R;
@@ -41,9 +39,30 @@ public class ProfileFragment extends Fragment {
 
         //get the current sleep record for today
         //loadNewDate(root, LocalDate.now().toString());
-        loadNewDate(root, "1970-01-01");
+        loadNewDate(root, "2020-01-01");
 
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        view.findViewById(R.id.PreviousButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentViewedDate = currentViewedDate.minusDays(1);
+                loadNewDate(getView(), currentViewedDate.toString());
+            }
+        });
+
+        view.findViewById(R.id.NextButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentViewedDate = currentViewedDate.plusDays(1);
+                loadNewDate(getView(), currentViewedDate.toString());
+            }
+        });
     }
 
     private SleepRecord getSleepFromDay (List<SleepRecord> sleeps, String date) {
@@ -57,23 +76,30 @@ public class ProfileFragment extends Fragment {
 
     private void loadNewDate(View view, String date) {
         //here we set texts :D
-        //first get the sleeprecord
         final TextView dayOfWeekTV = (TextView) view.findViewById(R.id.ProfileDate);
         final TextView wentToBedTV = (TextView) view.findViewById(R.id.wentToBedText);
         final TextView wokeUpTV = (TextView) view.findViewById(R.id.wokeUpText);
         final TextView timeSleptTV = (TextView) view.findViewById(R.id.timeSleptText);
+
         SleepRecord currentSleep;
 
+        //set the current viewed date to enable navigation
+        currentViewedDate = LocalDate.parse(date);
+
+        //next we get the LocalDate so we can know the day of the week
+        LocalDate lDate = LocalDate.parse(date);
+        String dayOfWeek = lDate.getDayOfWeek().getDisplayName(FULL, Locale.ENGLISH);
+        dayOfWeekTV.setText(dayOfWeek + "\n" + lDate.getDayOfMonth() + "/" + lDate.getMonthValue() + "/" + lDate.getYear());
+
         if ((currentSleep = getSleepFromDay(sleeps, date)) != null) {
-            //next we get the LocalDate so we can know the day of the week
-            LocalDate lDate = LocalDate.parse(date);
-            String dayOfWeek = lDate.getDayOfWeek().getDisplayName(FULL, Locale.ENGLISH);
             //we can change the text view now
-            dayOfWeekTV.setText(dayOfWeek + "\n" + lDate.getDayOfMonth() + "/" + lDate.getMonthValue() + "/" + lDate.getYear());
             wentToBedTV.setText(getString(R.string.profile_to_bed_text) + " " + currentSleep.getStartTime());
             wokeUpTV.setText(getString(R.string.profile_woke_up_text) + " " +  currentSleep.getEndTime());
             timeSleptTV.setText(getString(R.string.profile_time_slept_text) + " " +  "???");
         } else {
+            wentToBedTV.setText(getString(R.string.profile_to_bed_text) + " ");
+            wokeUpTV.setText(getString(R.string.profile_woke_up_text) + " ");
+            timeSleptTV.setText(getString(R.string.profile_time_slept_text) + " " +  "???");
             Toast.makeText(getContext(), "There is no data for this date!!", Toast.LENGTH_SHORT).show();
         }
     }
