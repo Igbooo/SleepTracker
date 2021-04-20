@@ -1,5 +1,6 @@
 package com.example.sleeptracker.ui.sleep;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -7,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -25,17 +27,19 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 public class SleepFragment extends Fragment {
-    Button buttonBedtime, buttonWakeUp, buttonSave;
-    TextView tvBedtime, tvWakeUp;
+    Button buttonBedtime, buttonWakeUp, buttonSave,buttonSleepDate, buttonWakeDate;
+    TextView tvBedtime, tvWakeUp, tvBedDate, tvWakeDate;
     int bedHour, bedMinute, wakeHour, wakeMinute;
+    int dYear,  dMonth,  day;
 
     private SleepViewModel homeViewModel;
 
     public void CalculateTime(int bedHour, int bedMinute, int wakeHour, int wakeMinute)
     {
-        long duration = bedHour - wakeHour;
-        long diffInHr = TimeUnit.MICROSECONDS.toHours(duration);
-        long diffInMin = TimeUnit.MICROSECONDS.toMinutes(duration);
+        long Hduration = bedHour - wakeHour;
+        long Mduration = bedMinute - wakeMinute;
+        long diffInHr = TimeUnit.MICROSECONDS.toHours(Hduration);
+        long diffInMin = TimeUnit.MICROSECONDS.toMinutes(Mduration);
 
         System.out.println(diffInHr + "Hrs and " + diffInMin  + "Minutes");
     }
@@ -51,6 +55,8 @@ public class SleepFragment extends Fragment {
         buttonBedtime = root.findViewById(R.id.downArrowBedtime);
         buttonWakeUp = root.findViewById(R.id.downArrowWakeUp);
         buttonSave = root.findViewById(R.id.saveInputButton);
+        buttonSleepDate = root.findViewById(R.id.downArrowBedDate);
+        buttonWakeDate = root.findViewById(R.id.downArrowWakeDate);
 
         buttonBedtime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +111,52 @@ public class SleepFragment extends Fragment {
                 toast.show();
             }
         });
+
+        buttonSleepDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                dYear = year;
+                                day = dayOfMonth;
+                                dMonth = month;
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.set(dYear, day, dMonth);
+                                tvBedDate.setText(DateFormat.format("dd:mm:yyyy", calendar));
+                            }
+                        }, 0, 12, 31
+                );
+                datePickerDialog.updateDate(dYear, dMonth, day);
+                datePickerDialog.show();
+            }
+        });
+
+        buttonWakeDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                dYear = year;
+                                day = dayOfMonth;
+                                dMonth = month;
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.set(dYear, day, dMonth);
+                                tvWakeDate.setText(DateFormat.format("dd:mm:yyyy", calendar));
+                            }
+                        }, 0, 12, 31
+                );
+                datePickerDialog.updateDate(dYear, dMonth, day);
+                datePickerDialog.show();
+            }
+        });
+
         return root;
+
     }
 }

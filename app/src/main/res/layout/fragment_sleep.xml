@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/inputSleepText2"
         android:layout_width="335dp"
-        android:layout_height="82dp"
+        android:layout_height="120dp"
         android:background="@drawable/rounded_corner"
         android:backgroundTint="@color/sleepBlue"
         android:gravity="center"
@@ -25,7 +25,7 @@
     <TextView
         android:id="@+id/inputSleepText"
         android:layout_width="335dp"
-        android:layout_height="82dp"
+        android:layout_height="120dp"
         android:layout_marginTop="100dp"
         android:background="@drawable/rounded_corner"
         android:backgroundTint="@color/sleepBlue"
@@ -66,6 +66,7 @@
         android:id="@+id/downArrowBedtime"
         android:layout_width="48dp"
         android:layout_height="45dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="10dp"
         android:backgroundTint="#00FFFFFF"
         android:foreground="@drawable/ic_arrow_drop_down_24px"
@@ -73,7 +74,23 @@
         android:text=""
         app:layout_constraintBottom_toBottomOf="@+id/inputSleepText"
         app:layout_constraintEnd_toEndOf="@+id/inputSleepText"
-        app:layout_constraintTop_toTopOf="@+id/inputSleepText" />
+        app:layout_constraintTop_toTopOf="@+id/inputSleepText"
+        app:layout_constraintVertical_bias="0.39" />
+
+    <Button
+        android:id="@+id/downArrowBedDate"
+        android:layout_width="48dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="#00FFFFFF"
+        android:foreground="@drawable/ic_arrow_drop_down_24px"
+        android:outlineProvider="none"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/inputSleepText"
+        app:layout_constraintEnd_toEndOf="@+id/inputSleepText"
+        app:layout_constraintTop_toTopOf="@+id/inputSleepText"
+        app:layout_constraintVertical_bias="0.39" />
 
     <Button
         android:id="@+id/saveInputButton"
@@ -91,6 +108,21 @@
         android:id="@+id/downArrowWakeUp"
         android:layout_width="48dp"
         android:layout_height="45dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="#00FFFFFF"
+        android:foreground="@drawable/ic_arrow_drop_down_24px"
+        android:outlineProvider="none"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/inputSleepText2"
+        app:layout_constraintEnd_toEndOf="@+id/inputSleepText2"
+        app:layout_constraintTop_toTopOf="@+id/inputSleepText2" />
+
+    <Button
+        android:id="@+id/downArrowWakeDate"
+        android:layout_width="48dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="10dp"
         android:backgroundTint="#00FFFFFF"
         android:foreground="@drawable/ic_arrow_drop_down_24px"
