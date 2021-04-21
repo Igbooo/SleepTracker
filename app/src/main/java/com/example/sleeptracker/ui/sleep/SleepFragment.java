@@ -53,7 +53,7 @@ public class SleepFragment extends Fragment {
         tvBedtime = root.findViewById(R.id.bedtimeTimeText);
         tvWakeUp = root.findViewById(R.id.wakeUpTimeText);
         buttonBedtime = root.findViewById(R.id.downArrowBedtime);
-        buttonWakeUp = root.findViewById(R.id.downArrowWakeUp);
+        buttonWakeUp = root.findViewById(R.id.downArrowWakeUpTime);
         buttonSave = root.findViewById(R.id.saveInputButton);
         buttonSleepDate = root.findViewById(R.id.downArrowBedDate);
         buttonWakeDate = root.findViewById(R.id.downArrowWakeDate);
