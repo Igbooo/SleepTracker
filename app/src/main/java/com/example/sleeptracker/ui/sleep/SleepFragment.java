@@ -122,8 +122,8 @@ public class SleepFragment extends Fragment {
                                 dMonth = month;
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.set(dYear, dMonth, day);
-                                tvBedDate.setText(DateFormat.format("dd-MM-yyyy", calendar));
-                                sleep.setStartDate(DateFormat.format("dd-MM-yyyy", calendar).toString());
+                                tvBedDate.setText(DateFormat.format("yyyy-MM-dd", calendar));
+                                sleep.setStartDate(DateFormat.format("yyyy-MM-dd", calendar).toString());
                             }
                         }, 2010, 1, 1
                 );
@@ -145,8 +145,8 @@ public class SleepFragment extends Fragment {
                                 dMonth = month;
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.set(dYear, dMonth, day);
-                                tvWakeDate.setText(DateFormat.format("dd-MM-yyyy", calendar));
-                                sleep.setEndDate(DateFormat.format("dd-MM-yyyy", calendar).toString());
+                                tvWakeDate.setText(DateFormat.format("yyyy-MM-dd", calendar));
+                                sleep.setEndDate(DateFormat.format("yyyy-MM-dd", calendar).toString());
                             }
                         }, 2010, 1, 1
                 );
