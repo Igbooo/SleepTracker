@@ -124,10 +124,10 @@ public class SleepFragment extends Fragment {
                                 day = dayOfMonth;
                                 dMonth = month;
                                 Calendar calendar = Calendar.getInstance();
-                                calendar.set(dYear, day, dMonth);
-                                tvBedDate.setText(DateFormat.format("dd:mm:yyyy", calendar));
+                                calendar.set(dYear, dMonth, day);
+                                tvBedtime.setText(DateFormat.format("dd:mm:yyyy", calendar));
                             }
-                        }, 0, 12, 31
+                        }, 2010, 1, 1
                 );
                 datePickerDialog.updateDate(dYear, dMonth, day);
                 datePickerDialog.show();
@@ -146,10 +146,10 @@ public class SleepFragment extends Fragment {
                                 day = dayOfMonth;
                                 dMonth = month;
                                 Calendar calendar = Calendar.getInstance();
-                                calendar.set(dYear, day, dMonth);
-                                tvWakeDate.setText(DateFormat.format("dd:mm:yyyy", calendar));
+                                calendar.set(dYear, dMonth, day);
+                                tvWakeUp.setText(DateFormat.format("dd-mm-yyyy", calendar));
                             }
-                        }, 0, 12, 31
+                        }, 2010, 1, 1
                 );
                 datePickerDialog.updateDate(dYear, dMonth, day);
                 datePickerDialog.show();
