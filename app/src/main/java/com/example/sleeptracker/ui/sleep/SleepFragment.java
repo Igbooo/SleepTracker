@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.example.sleeptracker.R;
+import com.example.sleeptracker.SleepRecord;
 
 import android.text.format.DateFormat;
 import android.widget.Toast;
@@ -26,13 +27,17 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
+import static com.example.sleeptracker.MainActivity.sleepDatabase;
+
 public class SleepFragment extends Fragment {
     Button buttonBedtime, buttonWakeUp, buttonSave,buttonSleepDate, buttonWakeDate;
-    TextView tvBedtime, tvWakeUp, tvBedDate, tvWakeDate;
+    TextView tvBedtimeTime, tvWakeUpTime, tvBedDate, tvWakeDate;
     int bedHour, bedMinute, wakeHour, wakeMinute;
     int dYear,  dMonth,  day;
 
     private SleepViewModel homeViewModel;
+
+    private SleepRecord sleep;
 
     public void CalculateTime(int bedHour, int bedMinute, int wakeHour, int wakeMinute)
     {
@@ -50,8 +55,11 @@ public class SleepFragment extends Fragment {
                 ViewModelProviders.of(this).get(SleepViewModel.class);
         View root = inflater.inflate(R.layout.fragment_sleep, container, false);
 
-        tvBedtime = root.findViewById(R.id.bedtimeTimeText);
-        tvWakeUp = root.findViewById(R.id.wakeUpTimeText);
+        sleep = new SleepRecord();
+        tvBedtimeTime = root.findViewById(R.id.bedtimeTimeText);
+        tvWakeUpTime = root.findViewById(R.id.wakeUpTimeText);
+        tvBedDate = root.findViewById(R.id.bedtimeDateText);
+        tvWakeDate = root.findViewById(R.id.wakeUpDateText);
         buttonBedtime = root.findViewById(R.id.downArrowBedtime);
         buttonWakeUp = root.findViewById(R.id.downArrowWakeUpTime);
         buttonSave = root.findViewById(R.id.saveInputButton);
@@ -70,12 +78,12 @@ public class SleepFragment extends Fragment {
                                 bedMinute = minute;
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.set(0,0,0,bedHour,bedMinute);
-                                tvBedtime.setText(DateFormat.format("hh:mm aa", calendar));
+                                tvBedtimeTime.setText(DateFormat.format("hh:mm aa", calendar));
+                                sleep.setStartTime(DateFormat.format("hh:mm", calendar).toString());
                             }
                         },12,0,false
                 );
                 timePickerDialog.updateTime(bedHour,bedMinute);
-
                 timePickerDialog.show();
             }
         });
@@ -91,7 +99,8 @@ public class SleepFragment extends Fragment {
                                 wakeMinute = minute;
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.set(0,0,0,wakeHour,wakeMinute);
-                                tvWakeUp.setText(DateFormat.format("hh:mm aa", calendar));
+                                tvWakeUpTime.setText(DateFormat.format("hh:mm aa", calendar));
+                                sleep.setEndTime(DateFormat.format("hh:mm", calendar).toString());
                             }
                         },12,0,false
                 );
@@ -100,18 +109,6 @@ public class SleepFragment extends Fragment {
                 timePickerDialog.show();
             }
         });
-        buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_navigation_sleep_to_navigation_profile);
-                Toast toast = Toast.makeText(getContext(),
-                        "Saved!",
-                        Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.BOTTOM, 0, 250);
-                toast.show();
-            }
-        });
-
         buttonSleepDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,7 +122,8 @@ public class SleepFragment extends Fragment {
                                 dMonth = month;
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.set(dYear, dMonth, day);
-                                tvBedtime.setText(DateFormat.format("dd:mm:yyyy", calendar));
+                                tvBedDate.setText(DateFormat.format("dd-MM-yyyy", calendar));
+                                sleep.setStartDate(DateFormat.format("dd-MM-yyyy", calendar).toString());
                             }
                         }, 2010, 1, 1
                 );
@@ -147,12 +145,27 @@ public class SleepFragment extends Fragment {
                                 dMonth = month;
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.set(dYear, dMonth, day);
-                                tvWakeUp.setText(DateFormat.format("dd-mm-yyyy", calendar));
+                                tvWakeDate.setText(DateFormat.format("dd-MM-yyyy", calendar));
+                                sleep.setEndDate(DateFormat.format("dd-MM-yyyy", calendar).toString());
                             }
                         }, 2010, 1, 1
                 );
                 datePickerDialog.updateDate(dYear, dMonth, day);
                 datePickerDialog.show();
+            }
+        });
+
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_navigation_sleep_to_navigation_profile);
+                sleepDatabase.sleepDAO().addRecord(sleep);
+                sleep = new SleepRecord(); //reset the sleep record
+                Toast toast = Toast.makeText(getContext(),
+                        "Saved!",
+                        Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.BOTTOM, 0, 250);
+                toast.show();
             }
         });
 
