@@ -1,10 +1,7 @@
 package com.example.sleeptracker;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.widget.Toast;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -12,6 +9,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.room.Room;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     public static SleepDatabase sleepDatabase;
@@ -23,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         //db init
         sleepDatabase = Room.databaseBuilder(getApplicationContext(), SleepDatabase.class, "sleepdb").allowMainThreadQueries().build();
         //disable this for release
+        sleepDatabase.clearAllTables();
         boolean dbWorks = dbTest();
 
         setContentView(R.layout.activity_main);
@@ -41,18 +41,23 @@ public class MainActivity extends AppCompatActivity {
     private boolean dbTest() {
         try {
             SleepRecord sleep = new SleepRecord();
-            sleep.setStartTime("12:00AM");
-            sleep.setEndTime("01:00AM");
-            sleep.setStartDate("01-01-1970");
-            sleep.setEndDate("01-01-1970");
+            sleep.setStartTime("00:00");
+            sleep.setEndTime("01:00");
+            sleep.setStartDate("2020-01-01");
+            sleep.setEndDate("2020-01-01");
             sleepDatabase.sleepDAO().addRecord(sleep);
-            sleepDatabase.sleepDAO().deleteRecord(sleep);
+            //sleepDatabase.sleepDAO().deleteRecord(sleep);
+            SleepRecord sleep2 = new SleepRecord();
+            sleep.setStartTime("07:13");
+            sleep.setEndTime("20:32");
+            sleep.setStartDate("2020-01-02");
+            sleep.setEndDate("2020-01-02");
+            sleepDatabase.sleepDAO().addRecord(sleep);
 
-            Toast.makeText(this, "DEBUG: Database inserted & deleted data successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "DEBUG: Database inserted data successfully!", Toast.LENGTH_SHORT).show();
 
             return true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
