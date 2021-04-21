@@ -13,4 +13,7 @@
     <string name="profile_to_bed_text">Went to bed:</string>
     <string name="profile_woke_up_text">Woke up:</string>
     <string name="profile_time_slept_text">Time slept:</string>
+    <string name="horizontal_axis_title">Day</string>
+    <string name="vertical_axis_title">Hours Slept</string>
+    <string name="stats_title">Stats</string>
 </resources>

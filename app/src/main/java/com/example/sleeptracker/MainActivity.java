@@ -1,5 +1,7 @@
 package com.example.sleeptracker;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -42,17 +44,53 @@ public class MainActivity extends AppCompatActivity {
         try {
             SleepRecord sleep = new SleepRecord();
             sleep.setStartTime("00:00");
-            sleep.setEndTime("01:00");
-            sleep.setStartDate("2020-01-01");
-            sleep.setEndDate("2020-01-01");
+            sleep.setEndTime("03:00");
+            sleep.setStartDate("2021-01-01");
+            sleep.setEndDate("2021-01-01");
             sleepDatabase.sleepDAO().addRecord(sleep);
             //sleepDatabase.sleepDAO().deleteRecord(sleep);
+
+            SleepRecord sleep1 = new SleepRecord();
+            sleep1.setStartTime("00:00");
+            sleep1.setEndTime("03:00");
+            sleep1.setStartDate("2021-01-02");
+            sleep1.setEndDate("2021-01-02");
+            sleepDatabase.sleepDAO().addRecord(sleep1);
+
             SleepRecord sleep2 = new SleepRecord();
-            sleep.setStartTime("07:13");
-            sleep.setEndTime("20:32");
-            sleep.setStartDate("2020-01-02");
-            sleep.setEndDate("2020-01-02");
-            sleepDatabase.sleepDAO().addRecord(sleep);
+            sleep2.setStartTime("00:00");
+            sleep2.setEndTime("01:00");
+            sleep2.setStartDate("2021-01-03");
+            sleep2.setEndDate("2021-01-03");
+            sleepDatabase.sleepDAO().addRecord(sleep2);
+
+            SleepRecord sleep3 = new SleepRecord();
+            sleep3.setStartTime("00:00");
+            sleep3.setEndTime("01:00");
+            sleep3.setStartDate("2021-01-04");
+            sleep3.setEndDate("2021-01-04");
+            sleepDatabase.sleepDAO().addRecord(sleep3);
+
+            SleepRecord sleep4 = new SleepRecord();
+            sleep4.setStartTime("00:00");
+            sleep4.setEndTime("03:00");
+            sleep4.setStartDate("2021-01-05");
+            sleep4.setEndDate("2021-01-05");
+            sleepDatabase.sleepDAO().addRecord(sleep4);
+
+            SleepRecord sleep5 = new SleepRecord();
+            sleep5.setStartTime("00:00");
+            sleep5.setEndTime("01:00");
+            sleep5.setStartDate("2021-01-06");
+            sleep5.setEndDate("2021-01-06");
+            sleepDatabase.sleepDAO().addRecord(sleep5);
+
+            SleepRecord sleep6 = new SleepRecord();
+            sleep6.setStartTime("00:00");
+            sleep6.setEndTime("01:00");
+            sleep6.setStartDate("2021-01-07");
+            sleep6.setEndDate("2021-01-07");
+            sleepDatabase.sleepDAO().addRecord(sleep6);
 
             Toast.makeText(this, "DEBUG: Database inserted data successfully!", Toast.LENGTH_SHORT).show();
 
