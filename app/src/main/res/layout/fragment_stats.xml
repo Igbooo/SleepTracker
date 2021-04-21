@@ -6,6 +6,67 @@
     android:layout_height="match_parent"
     tools:context=".ui.stats.StatsFragment">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/statsGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="80dp" />
+
+    <TextView
+        android:id="@+id/statsDate"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:gravity="center|fill_vertical"
+        android:text="Date"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/graph"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/statsTitle" />
+
+    <Button
+        android:id="@+id/nextStatsButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:foreground="@drawable/ic_navigate_next_24px"
+        android:foregroundTint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/graph"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/statsDate"
+        app:layout_constraintTop_toBottomOf="@+id/statsTitle" />
+
+    <Button
+        android:id="@+id/previousStatsButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:foreground="@drawable/ic_navigate_before_black_18dp"
+        android:foregroundTint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/graph"
+        app:layout_constraintEnd_toStartOf="@+id/statsDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/statsTitle" />
+
+    <TextView
+        android:id="@+id/statsTitle"
+        android:layout_width="179dp"
+        android:layout_height="44dp"
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="@color/sleepBlue"
+        android:gravity="center"
+        android:text="@string/stats_title"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/statsGuide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graph"
         android:layout_width="360dp"
@@ -14,6 +75,18 @@
         android:backgroundTint="@color/sleepBlue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/statsGuide" />
+
+    <Button
+        android:id="@+id/statsCalendar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="#00FFFFFF"
+        android:foreground="@drawable/ic_baseline_date_range_white_24"
+        app:layout_constraintBottom_toTopOf="@+id/statsGuide"
+        app:layout_constraintEnd_toStartOf="@+id/statsTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
