@@ -79,7 +79,7 @@ public class SleepFragment extends Fragment {
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.set(0,0,0,bedHour,bedMinute);
                                 tvBedtimeTime.setText(DateFormat.format("hh:mm aa", calendar));
-                                sleep.setStartTime(DateFormat.format("hh:mm", calendar).toString());
+                                sleep.setStartTime(DateFormat.format("HH:mm", calendar).toString());
                             }
                         },12,0,false
                 );
@@ -100,7 +100,7 @@ public class SleepFragment extends Fragment {
                                 Calendar calendar = Calendar.getInstance();
                                 calendar.set(0,0,0,wakeHour,wakeMinute);
                                 tvWakeUpTime.setText(DateFormat.format("hh:mm aa", calendar));
-                                sleep.setEndTime(DateFormat.format("hh:mm", calendar).toString());
+                                sleep.setEndTime(DateFormat.format("HH:mm", calendar).toString());
                             }
                         },12,0,false
                 );

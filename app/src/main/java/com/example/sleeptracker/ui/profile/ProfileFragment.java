@@ -1,7 +1,6 @@
 package com.example.sleeptracker.ui.profile;
 
 import android.app.DatePickerDialog;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -30,7 +28,6 @@ import static java.time.format.TextStyle.FULL;
 import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class ProfileFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
     private ProfileViewModel profileViewModel;
@@ -102,6 +99,7 @@ public class ProfileFragment extends Fragment implements DatePickerDialog.OnDate
         final TextView wokeUpTV = (TextView) view.findViewById(R.id.wokeUpText);
         final TextView timeSleptTV = (TextView) view.findViewById(R.id.timeSleptText);
 
+        sleeps = sleepDatabase.sleepDAO().getDataFromDB();
         SleepRecord currentSleep;
 
         //set the current viewed date to enable navigation
@@ -120,6 +118,9 @@ public class ProfileFragment extends Fragment implements DatePickerDialog.OnDate
             String endTimeFormat = endTime.format(formatter);
             Long hoursSlept = HOURS.between(startTime, endTime);
             Long minutesSlept = MINUTES.between(startTime, endTime) % 60;
+
+            //failsafe for time logic
+            if (hoursSlept < 0) { hoursSlept += 12; }
 
             wentToBedTV.setText(getString(R.string.profile_to_bed_text) + " " + startTimeFormat);
             wokeUpTV.setText(getString(R.string.profile_woke_up_text) + " " + endTimeFormat);

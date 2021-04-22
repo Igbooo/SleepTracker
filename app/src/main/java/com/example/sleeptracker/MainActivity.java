@@ -93,6 +93,13 @@ public class MainActivity extends AppCompatActivity {
             sleep6.setEndDate("2021-01-07");
             sleepDatabase.sleepDAO().addRecord(sleep6);
 
+            SleepRecord sleep7 = new SleepRecord();
+            sleep7.setStartTime("00:00");
+            sleep7.setEndTime("11:30");
+            sleep7.setStartDate("1900-01-01");
+            sleep7.setEndDate("1900-01-01");
+            sleepDatabase.sleepDAO().addRecord(sleep7);
+
             Toast.makeText(this, "DEBUG: Database inserted data successfully!", Toast.LENGTH_SHORT).show();
 
             return true;

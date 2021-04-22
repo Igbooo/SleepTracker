@@ -2,7 +2,6 @@ package com.example.sleeptracker.ui.stats;
 
 import android.app.DatePickerDialog;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,27 +10,20 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sleeptracker.R;
 import com.example.sleeptracker.SleepRecord;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,18 +36,18 @@ public class StatsFragment extends Fragment implements DatePickerDialog.OnDateSe
 
     private StatsViewModel statsViewModel;
     List<SleepRecord> sleeps = sleepDatabase.sleepDAO().getDataFromDB();
-
     BarGraphSeries<DataPoint> series;
     public static LocalDate currentViewedDate;
+    Double maxSleepTime;
+    GraphView graph;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_stats, container, false);
 
         statsViewModel = ViewModelProviders.of(this).get(StatsViewModel.class);
 
-        GraphView graph = (GraphView) root.findViewById(R.id.graph);
+        graph = (GraphView) root.findViewById(R.id.graph);
 
         DataPoint[] dataPoints = loadNewDate(root, "2021-01-01");
         series = new BarGraphSeries<>(dataPoints);
@@ -68,7 +60,7 @@ public class StatsFragment extends Fragment implements DatePickerDialog.OnDateSe
             }
         });
         series.setSpacing(50);
-        graph.getGridLabelRenderer().setNumHorizontalLabels(7);
+        //graph.getGridLabelRenderer().setNumHorizontalLabels(7);
         graph.getGridLabelRenderer().setHorizontalAxisTitle(getString(R.string.horizontal_axis_title));
         graph.getGridLabelRenderer().setVerticalAxisTitle(getString(R.string.vertical_axis_title));
         graph.getGridLabelRenderer().setPadding(75);
@@ -79,6 +71,7 @@ public class StatsFragment extends Fragment implements DatePickerDialog.OnDateSe
 
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(maxSleepTime + 1);
 
         return root;
     }
@@ -130,7 +123,8 @@ public class StatsFragment extends Fragment implements DatePickerDialog.OnDateSe
 
     private DataPoint[] loadNewDate(View view, String date) {
         final TextView dayOfWeekTV = (TextView) view.findViewById(R.id.statsDate);
-        List<Long> timesSlept = new ArrayList<Long>();
+        sleeps = sleepDatabase.sleepDAO().getDataFromDB();
+        List<Double> timesSlept = new ArrayList<Double>();
 
         currentViewedDate = LocalDate.parse(date);
 
@@ -154,36 +148,41 @@ public class StatsFragment extends Fragment implements DatePickerDialog.OnDateSe
                     //work out the time slept and add it to a list of times
                     LocalTime startTime = LocalTime.parse(s.getStartTime());
                     LocalTime endTime = LocalTime.parse(s.getEndTime());
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
-                    String startTimeFormat = startTime.format(formatter);
-                    String endTimeFormat = endTime.format(formatter);
-                    Long timeSlept = MINUTES.between(startTime, endTime) / 60;
+                    Long timeSlept = MINUTES.between(startTime, endTime);
 
-                    timesSlept.add(timeSlept);
+                    if (timeSlept < 0) { timeSlept += 720; }
+                    double hrsSlept = (timeSlept / 60) + ((timeSlept % 60.0) / 60.0);
+                    timesSlept.add(hrsSlept);
                     found = true;
                 }
             }
 
             if (!found) { //if we never find a matching entry, set the time slept for that date to 0
-                timesSlept.add(0L);
+                timesSlept.add(0D);
+            }
+        }
+
+        maxSleepTime = 0D;
+        for (Double t : timesSlept) {
+            if (t > maxSleepTime) {
+                maxSleepTime = t;
             }
         }
 
         DataPoint[] values = new DataPoint[7];
-
         for (int i=0; i<7; i++) {
             double x = i + 1;
             double y = timesSlept.get(i);
             DataPoint v = new DataPoint(x, y);
             values[i] = v;
         }
-
         return values;
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         month++;
-        currentViewedDate = currentViewedDate.of(year, month, day);
+        currentViewedDate = LocalDate.of(year, month, day);
         series.resetData(loadNewDate(getView(), currentViewedDate.toString()));
+        graph.getViewport().setMaxY(maxSleepTime + 1);
     }
 }
