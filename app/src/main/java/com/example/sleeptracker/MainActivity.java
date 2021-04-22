@@ -2,6 +2,7 @@ package com.example.sleeptracker;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -25,8 +26,9 @@ public class MainActivity extends AppCompatActivity {
         //db init
         sleepDatabase = Room.databaseBuilder(getApplicationContext(), SleepDatabase.class, "sleepdb").allowMainThreadQueries().build();
         //disable this for release
-        //boolean dbWorks = dbTest();
-
+        if (BuildConfig.BUILD_TYPE.equals("actualDebug")) {
+            boolean dbWorks = dbTest();
+        }
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
         BottomNavigationView navView = findViewById(R.id.nav_view);
