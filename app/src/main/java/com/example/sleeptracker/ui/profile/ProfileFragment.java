@@ -29,21 +29,16 @@ import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 public class ProfileFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
-
-    private ProfileViewModel profileViewModel;
-
     List<SleepRecord> sleeps = sleepDatabase.sleepDAO().getDataFromDB();
     public static LocalDate currentViewedDate;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        profileViewModel =
-                ViewModelProviders.of(this).get(ProfileViewModel.class);
+        ProfileViewModel profileViewModel = ViewModelProviders.of(this).get(ProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
         //get the current sleep record for today
-        //loadNewDate(root, LocalDate.now().toString());
-        loadNewDate(root, "2020-01-01");
+        loadNewDate(root, LocalDate.now().toString());
 
         return root;
     }
@@ -65,7 +60,6 @@ public class ProfileFragment extends Fragment implements DatePickerDialog.OnDate
                 datePickerDialog.show();
             }
         });
-
         view.findViewById(R.id.PreviousButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +67,6 @@ public class ProfileFragment extends Fragment implements DatePickerDialog.OnDate
                 loadNewDate(getView(), currentViewedDate.toString());
             }
         });
-
         view.findViewById(R.id.NextButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +103,7 @@ public class ProfileFragment extends Fragment implements DatePickerDialog.OnDate
         String dayOfWeek = lDate.getDayOfWeek().getDisplayName(FULL, Locale.ENGLISH);
         dayOfWeekTV.setText(dayOfWeek + "\n" + lDate.getDayOfMonth() + "/" + lDate.getMonthValue() + "/" + lDate.getYear());
 
+        //calculate the time slept
         if ((currentSleep = getSleepFromDay(sleeps, date)) != null) {
             LocalTime startTime = LocalTime.parse(currentSleep.getStartTime());
             LocalTime endTime = LocalTime.parse(currentSleep.getEndTime());
@@ -125,7 +119,7 @@ public class ProfileFragment extends Fragment implements DatePickerDialog.OnDate
             wentToBedTV.setText(getString(R.string.profile_to_bed_text) + " " + startTimeFormat);
             wokeUpTV.setText(getString(R.string.profile_woke_up_text) + " " + endTimeFormat);
             timeSleptTV.setText(getString(R.string.profile_time_slept_text) + " " + hoursSlept + "h " + minutesSlept + "m");
-        } else {
+        } else { //if the current date doesn't have a sleeprecord
             wentToBedTV.setText(getString(R.string.profile_to_bed_text) + " ");
             wokeUpTV.setText(getString(R.string.profile_woke_up_text) + " ");
             timeSleptTV.setText(getString(R.string.profile_time_slept_text) + " ");
@@ -134,8 +128,8 @@ public class ProfileFragment extends Fragment implements DatePickerDialog.OnDate
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        month++;
-        currentViewedDate = currentViewedDate.of(year, month, day);
+        month++; //change 0-11 dates to 1-12
+        currentViewedDate = LocalDate.of(year, month, day);
         loadNewDate(getView(), currentViewedDate.toString());
     }
 }

@@ -36,25 +36,11 @@ public class SleepFragment extends Fragment {
     TextView tvBedtimeTime, tvWakeUpTime, tvBedDate, tvWakeDate;
     int bedHour, bedMinute, wakeHour, wakeMinute;
     int dYear,  dMonth,  day;
-
-    private SleepViewModel homeViewModel;
-
     private SleepRecord sleep;
-
-    public void CalculateTime(int bedHour, int bedMinute, int wakeHour, int wakeMinute)
-    {
-        long Hduration = bedHour - wakeHour;
-        long Mduration = bedMinute - wakeMinute;
-        long diffInHr = TimeUnit.MICROSECONDS.toHours(Hduration);
-        long diffInMin = TimeUnit.MICROSECONDS.toMinutes(Mduration);
-
-        System.out.println(diffInHr + "Hrs and " + diffInMin  + "Minutes");
-    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(SleepViewModel.class);
+        SleepViewModel homeViewModel = ViewModelProviders.of(this).get(SleepViewModel.class);
         View root = inflater.inflate(R.layout.fragment_sleep, container, false);
 
         sleep = new SleepRecord();
@@ -132,7 +118,6 @@ public class SleepFragment extends Fragment {
                 datePickerDialog.show();
             }
         });
-
         buttonWakeDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,10 +138,8 @@ public class SleepFragment extends Fragment {
                 );
                 //datePickerDialog.updateDate(dYear, dMonth, day);
                 datePickerDialog.show();
-
             }
         });
-
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,6 +155,5 @@ public class SleepFragment extends Fragment {
         });
 
         return root;
-
     }
 }

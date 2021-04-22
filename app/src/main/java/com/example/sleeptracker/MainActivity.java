@@ -25,8 +25,7 @@ public class MainActivity extends AppCompatActivity {
         //db init
         sleepDatabase = Room.databaseBuilder(getApplicationContext(), SleepDatabase.class, "sleepdb").allowMainThreadQueries().build();
         //disable this for release
-        sleepDatabase.clearAllTables();
-        boolean dbWorks = dbTest();
+        //boolean dbWorks = dbTest();
 
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
@@ -42,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean dbTest() {
+        sleepDatabase.clearAllTables();
         try {
             SleepRecord sleep = new SleepRecord();
             sleep.setStartTime("00:00");

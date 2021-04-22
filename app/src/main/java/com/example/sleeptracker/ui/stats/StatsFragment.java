@@ -33,8 +33,6 @@ import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 public class StatsFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
-
-    private StatsViewModel statsViewModel;
     List<SleepRecord> sleeps = sleepDatabase.sleepDAO().getDataFromDB();
     BarGraphSeries<DataPoint> series;
     public static LocalDate currentViewedDate;
@@ -44,14 +42,15 @@ public class StatsFragment extends Fragment implements DatePickerDialog.OnDateSe
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_stats, container, false);
-
-        statsViewModel = ViewModelProviders.of(this).get(StatsViewModel.class);
+        StatsViewModel statsViewModel = ViewModelProviders.of(this).get(StatsViewModel.class);
 
         graph = (GraphView) root.findViewById(R.id.graph);
 
-        DataPoint[] dataPoints = loadNewDate(root, "2021-01-01");
+        //load data starting at the current date
+        DataPoint[] dataPoints = loadNewDate(root, LocalDate.now().toString());
         series = new BarGraphSeries<>(dataPoints);
 
+        //graph related setup
         graph.addSeries(series);
         series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
             @Override
@@ -127,11 +126,12 @@ public class StatsFragment extends Fragment implements DatePickerDialog.OnDateSe
         List<Double> timesSlept = new ArrayList<Double>();
 
         currentViewedDate = LocalDate.parse(date);
-
         LocalDate lDate = LocalDate.parse(date);
         String dayOfWeek = lDate.getDayOfWeek().getDisplayName(FULL, Locale.ENGLISH);
+
         dayOfWeekTV.setText(lDate.getDayOfMonth() + "/" + lDate.getMonthValue() + "/" + lDate.getYear());
 
+        //get a week of dates into a list
         ArrayList<LocalDate> localDates = new ArrayList<LocalDate>();
         for (int i=0; i<7; i++) {
             localDates.add(lDate.plusDays(i));
@@ -151,7 +151,7 @@ public class StatsFragment extends Fragment implements DatePickerDialog.OnDateSe
                     Long timeSlept = MINUTES.between(startTime, endTime);
 
                     if (timeSlept < 0) { timeSlept += 720; }
-                    double hrsSlept = (timeSlept / 60) + ((timeSlept % 60.0) / 60.0);
+                    double hrsSlept = (timeSlept / 60.0) + ((timeSlept % 60.0) / 60.0);
                     timesSlept.add(hrsSlept);
                     found = true;
                 }
@@ -162,6 +162,7 @@ public class StatsFragment extends Fragment implements DatePickerDialog.OnDateSe
             }
         }
 
+        //find the largest time slept so we can set the Y value of the graph
         maxSleepTime = 0D;
         for (Double t : timesSlept) {
             if (t > maxSleepTime) {
@@ -169,6 +170,7 @@ public class StatsFragment extends Fragment implements DatePickerDialog.OnDateSe
             }
         }
 
+        //set the datapoints for the graph to use
         DataPoint[] values = new DataPoint[7];
         for (int i=0; i<7; i++) {
             double x = i + 1;
@@ -180,9 +182,11 @@ public class StatsFragment extends Fragment implements DatePickerDialog.OnDateSe
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        month++;
+        month++; //change 0-11 dates to 1-12
         currentViewedDate = LocalDate.of(year, month, day);
+
+        //change the graph values
         series.resetData(loadNewDate(getView(), currentViewedDate.toString()));
-        graph.getViewport().setMaxY(maxSleepTime + 1);
+        graph.getViewport().setMaxY(maxSleepTime + 1); //set the y value
     }
 }
