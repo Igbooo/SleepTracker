@@ -24,6 +24,8 @@ import android.text.format.DateFormat;
 import android.widget.Toast;
 
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
@@ -81,9 +83,9 @@ public class SleepFragment extends Fragment {
                                 tvBedtimeTime.setText(DateFormat.format("hh:mm aa", calendar));
                                 sleep.setStartTime(DateFormat.format("HH:mm", calendar).toString());
                             }
-                        },12,0,false
+                        },LocalTime.now().getHour(), LocalTime.now().getMinute(),false
                 );
-                timePickerDialog.updateTime(bedHour,bedMinute);
+                //timePickerDialog.updateTime(bedHour,bedMinute);
                 timePickerDialog.show();
             }
         });
@@ -102,10 +104,9 @@ public class SleepFragment extends Fragment {
                                 tvWakeUpTime.setText(DateFormat.format("hh:mm aa", calendar));
                                 sleep.setEndTime(DateFormat.format("HH:mm", calendar).toString());
                             }
-                        },12,0,false
+                        }, LocalTime.now().getHour(), LocalTime.now().getMinute(),false
                 );
-                timePickerDialog.updateTime(wakeHour,wakeMinute);
-
+                //timePickerDialog.updateTime(wakeHour,wakeMinute);
                 timePickerDialog.show();
             }
         });
@@ -125,9 +126,9 @@ public class SleepFragment extends Fragment {
                                 tvBedDate.setText(DateFormat.format("yyyy-MM-dd", calendar));
                                 sleep.setStartDate(DateFormat.format("yyyy-MM-dd", calendar).toString());
                             }
-                        }, 2010, 1, 1
+                        }, LocalDate.now().getYear(), LocalDate.now().getMonthValue() - 1, LocalDate.now().getDayOfMonth()
                 );
-                datePickerDialog.updateDate(dYear, dMonth, day);
+                //datePickerDialog.updateDate(dYear, dMonth, day);
                 datePickerDialog.show();
             }
         });
@@ -148,10 +149,11 @@ public class SleepFragment extends Fragment {
                                 tvWakeDate.setText(DateFormat.format("yyyy-MM-dd", calendar));
                                 sleep.setEndDate(DateFormat.format("yyyy-MM-dd", calendar).toString());
                             }
-                        }, 2010, 1, 1
+                        }, LocalDate.now().getYear(), LocalDate.now().getMonthValue() - 1, LocalDate.now().getDayOfMonth()
                 );
-                datePickerDialog.updateDate(dYear, dMonth, day);
+                //datePickerDialog.updateDate(dYear, dMonth, day);
                 datePickerDialog.show();
+
             }
         });
 
