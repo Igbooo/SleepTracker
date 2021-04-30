@@ -16,8 +16,11 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.sleeptracker.R;
 import com.example.sleeptracker.SleepRecord;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
@@ -107,14 +110,19 @@ public class ProfileFragment extends Fragment implements DatePickerDialog.OnDate
         if ((currentSleep = getSleepFromDay(sleeps, date)) != null) {
             LocalTime startTime = LocalTime.parse(currentSleep.getStartTime());
             LocalTime endTime = LocalTime.parse(currentSleep.getEndTime());
+            LocalDate startDate = LocalDate.parse(currentSleep.getStartDate());
+            LocalDate endDate = LocalDate.parse(currentSleep.getEndDate());
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
             String startTimeFormat = startTime.format(formatter);
             String endTimeFormat = endTime.format(formatter);
-            Long hoursSlept = HOURS.between(startTime, endTime);
-            Long minutesSlept = MINUTES.between(startTime, endTime) % 60;
 
-            //failsafe for time logic
-            if (hoursSlept < 0) { hoursSlept += 12; }
+            LocalDateTime startDT = LocalDateTime.of(startDate, startTime);
+            LocalDateTime endDT = LocalDateTime.of(endDate, endTime);
+            Long minsBetween = MINUTES.between(startDT, endDT);
+
+            Long hoursSlept = minsBetween / 60;
+            Long minutesSlept = minsBetween % 60;
 
             wentToBedTV.setText(getString(R.string.profile_to_bed_text) + " " + startTimeFormat);
             wokeUpTV.setText(getString(R.string.profile_woke_up_text) + " " + endTimeFormat);

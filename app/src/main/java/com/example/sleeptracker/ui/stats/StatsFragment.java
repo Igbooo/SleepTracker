@@ -21,6 +21,7 @@ import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -148,9 +149,12 @@ public class StatsFragment extends Fragment implements DatePickerDialog.OnDateSe
                     //work out the time slept and add it to a list of times
                     LocalTime startTime = LocalTime.parse(s.getStartTime());
                     LocalTime endTime = LocalTime.parse(s.getEndTime());
-                    Long timeSlept = MINUTES.between(startTime, endTime);
+                    LocalDate endDate = LocalDate.parse(s.getEndDate());
+                    LocalDateTime startDT = LocalDateTime.of(startDate, startTime);
+                    LocalDateTime endDT = LocalDateTime.of(endDate, endTime);
+                    
+                    Long timeSlept = MINUTES.between(startDT, endDT);
 
-                    if (timeSlept < 0) { timeSlept += 720; }
                     double hrsSlept = (timeSlept / 60.0) + ((timeSlept % 60.0) / 60.0);
                     timesSlept.add(hrsSlept);
                     found = true;
