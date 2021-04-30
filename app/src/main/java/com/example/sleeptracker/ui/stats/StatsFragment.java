@@ -110,6 +110,7 @@ public class StatsFragment extends Fragment implements DatePickerDialog.OnDateSe
             @Override
             public void onClick(View v) {
                 series.resetData(loadNewDate(getView(), currentViewedDate.minusDays(7).toString()));
+                graph.getViewport().setMaxY(maxSleepTime + 1);
             }
         });
 
@@ -117,6 +118,7 @@ public class StatsFragment extends Fragment implements DatePickerDialog.OnDateSe
             @Override
             public void onClick(View v) {
                 series.resetData(loadNewDate(getView(), currentViewedDate.plusDays(7).toString()));
+                graph.getViewport().setMaxY(maxSleepTime + 1);
             }
         });
     }
